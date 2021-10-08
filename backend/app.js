@@ -1,26 +1,23 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
-const User = require('./models/user');
-const Sauce = require('./models/sauce');
+/*const User = require('./models/user');*/
+/*const Sauce = require('./models/sauce');*/
 
+const userRoutes = require('./routes/user');
 
-
-/*--------------------------------------------------------*/
-
-mongoose.connect('mongodb+srv://kage59:shogun99@cluster0.dnnex.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
-                 
+// Connexion à la base de données avec mongoose
+mongoose.connect('mongodb+srv://kage59:shogun99@cluster0.dnnex.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',              
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
 
-/*--------------------------------------------------------*/
 
 const app = express ();
 
-/*--------------------------------------------------------*/
 
+// Définition de headers pour éviters les erreurs de CORS
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
@@ -28,10 +25,12 @@ app.use((req, res, next) => {
   next();
 });
 
+
 app.use(express.json());
 
 
-
+// Enregistrement des routeurs
+app.use('/api/auth', userRoutes);
 
 
 
@@ -60,9 +59,10 @@ app.use('/api/auth/signup', (req, res, next) => {
   const signup = [
   ];
   res.status(200).json(signup);
-});*/
+});
 
 /*--------------------------------------------------------*/
+
 
 /*app.post('/api/auth/login', (req, res, next) => {
   console.log(req.body);
@@ -76,9 +76,23 @@ app.use('/api/auth/login', (req, res, next) => {
   const login = [
   ];
   res.status(200).json(login);
-});*/
+});
 
 /*--------------------------------------------------------*/
+
+
+module.exports = app;
+
+
+
+
+
+
+
+
+
+
+
 
 /*app.post('/api/sauces', (req, res, next) => {
   delete req.body._id;
@@ -107,10 +121,6 @@ app.use('/api/sauces', (req, res, next) => {
 });*/
 
 /*--------------------------------------------------------*/
-
-module.exports = app;
-
-
 
 
 
