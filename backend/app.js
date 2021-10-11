@@ -2,8 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 
 const userRoutes = require('./routes/user')
-/*const saucesRoutes = require('./routes/sauce')*/
-/*const Sauce = require('./models/sauce');*/
+
+
 
 // Connexion à la base de données avec mongoose
 mongoose.connect('mongodb+srv://kage59:shogun99@cluster0.dnnex.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',              
@@ -30,61 +30,10 @@ app.use(express.json());
 
 // Enregistrement des routeurs
 app.use('/api/auth', userRoutes);
-/*app.use('/api/sauces', saucesRoutes )*/
+
+
 
 module.exports = app;
-
-
-/*app.post('/api/stuff', (req, res, next) => {
-  delete req.body._id;
-  const sauce = new Sauce({
-    ...req.body
-  });
-  sauce.save()
-    .then(() => res.status(201).json({ message: 'Objet enregistré !'}))
-    .catch(error => res.status(400).json({ error }));
-});
-
-
-app.use('/api/sauces', (req, res, next) => {
-  Sauce.find()
-    .then(sauce => res.status(200).json(sauce))
-    .catch(error => res.status(400).json({ error }));
-
-res.status(200).json(sauces);
-
-});*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
