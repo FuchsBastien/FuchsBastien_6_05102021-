@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 
 const userRoutes = require('./routes/user')
-
+const saucesRoutes = require('./routes/sauce')
 
 
 // Connexion à la base de données avec mongoose
@@ -30,7 +30,7 @@ app.use(express.json());
 
 // Enregistrement des routeurs
 app.use('/api/auth', userRoutes);
-
+app.use('/api/sauces', saucesRoutes);
 
 
 module.exports = app;
