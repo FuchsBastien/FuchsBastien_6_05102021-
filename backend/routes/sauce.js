@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const sauceCtrl = require('../controllers/sauce');
 
-
 // Routes
 router.post('/', sauceCtrl.createSauce);
 router.put('/:id', sauceCtrl.modifySauce);
