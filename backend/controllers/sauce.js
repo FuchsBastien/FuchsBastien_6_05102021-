@@ -1,4 +1,5 @@
 const Sauce = require('../models/Sauce');
+const fs = require('fs');
 
 
 //créer nouvelle sauce
@@ -34,11 +35,20 @@ exports.createSauce = (req, res, next) => {
   };
   
 
-//supprimer sauce selectionnée
-   exports.deleteSauce = (req, res, next) => {
-    Sauce.deleteOne({ _id: req.params.id })
-      .then(() => res.status(200).json({ message: 'Sauce supprimée !'}))
-      .catch(error => res.status(400).json({ error }));
+  //supprimer sauce selectionnée
+  exports.deleteSauce = (req, res, next) => {
+    Sauce.findOne({ _id: req.params.id })
+      .then(sauce => {
+        // Récupération du nom du fichier
+        const filename = sauce.imageUrl.split('/images/')[1];
+        // On efface le fichier (unlink)
+        fs.unlink(`images/${filename}`, () => {
+          Sauce.deleteOne({ _id: req.params.id })
+            .then(() => res.status(200).json({ message: 'Sauce supprimée !'}))
+            .catch(error => res.status(400).json({ error }));
+        });
+      })
+      .catch(error => res.status(500).json({ error }));
   };
 
 
