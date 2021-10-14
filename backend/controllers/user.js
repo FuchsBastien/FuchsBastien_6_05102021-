@@ -4,7 +4,7 @@ const User = require('../models/User');
 
 
 // Logiques métiers pour les utilisateurs
-// Création de nouveaux utilisateurs (Post signup)
+// Création de nouveaux utilisateurs (signup)
 exports.signup = (req, res, next) => {
   // Hash du mot de passe avec bcrypt
     bcrypt.hash(req.body.password, 10)
@@ -16,13 +16,19 @@ exports.signup = (req, res, next) => {
         // Sauvegarde dans la base de données
         user.save()
           .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
-          .catch(error => res.status(400).json({ error }));
-      })
+          .catch(error => {
+            if (req.body.mail === user.mail){
+            res.status(408).json({ message: 'Adresse mail déjà utilisée !' });
+            }
+            else {res.status(400).json({ error });
+            }
+          })
+      })  
       .catch(error => res.status(500).json({ error }));
   };
 
 
-// Création de connexion d'utilisateur enregistré (Post login)
+// Création de connexion d'utilisateur enregistré (login)
 exports.login = (req, res, next) => {
     // Recherche d'un utilisateur dans la base de données
     User.findOne({ email: req.body.email })
