@@ -5,16 +5,20 @@ const fs = require('fs');
 //enregistrer nouvelle sauce
 exports.createSauce = (req, res, next) => {
     const sauceObject = JSON.parse(req.body.sauce);
+    //ID de le requête à supprimer car généré automatiquement par mongoDB
     delete sauceObject._id;
-    // Création d'un nouvel objet Sauce
+    // Création d'un nouvel objet Sauce à partir du modèle créé
     const sauce = new Sauce({
+      //copie tous les champs de la requête de la variable sauceObject
       ...sauceObject,
       // Création de l'URL de l'image : http://localhost:3000/image/nomdufichier 
       imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     });
     // Enregistrement de l'objet sauce dans la base de données
     sauce.save()
+      //réponse obligatoire sinon expiration de la requête
       .then(() => res.status(201).json({ message: 'Sauce enregistré !'}))
+      //erreur si requête non envoyé au serveur
       .catch(error => res.status(400).json({ error }));
   };
 
@@ -53,6 +57,7 @@ exports.createSauce = (req, res, next) => {
 
 //afficher sauce selectionnée
   exports.getOneSauce = (req, res, next) => {
+    //afficher la sauce par son ID récupéré dans l'url
     Sauce.findOne({ _id: req.params.id })
       .then(sauce => res.status(200).json(sauce))
       .catch(error => res.status(404).json({ error }));
@@ -64,7 +69,6 @@ exports.createSauce = (req, res, next) => {
     Sauce.find()
       .then(sauce => res.status(200).json(sauce))
       .catch(error => res.status(400).json({ error }));
-  /*res.status(200).json(sauces);*/
   };
   
 

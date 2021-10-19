@@ -12,9 +12,12 @@ const normalizePort = val => {
   }
   return false;
 };
+
+//la fonction normalizePort renvoie un port valide pour l'application express
 const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
+//fonction errorHandler  recherche les différentes erreurs et les gère de manière appropriée. Elle est ensuite enregistrée dans le serveur 
 const errorHandler = error => {
   if (error.syscall !== 'listen') {
     throw error;
@@ -34,7 +37,7 @@ const errorHandler = error => {
       throw error;
   }
 };
-
+ //fonction de l'application express qui va recevoir la requête et la réponse
 const server = http.createServer(app);
 
 server.on('error', errorHandler);
